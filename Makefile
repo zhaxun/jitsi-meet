@@ -4,7 +4,7 @@ DEPLOY_DIR = libs
 LIBJITSIMEET_DIR = node_modules/lib-jitsi-meet/
 LIBFLAC_DIR = node_modules/libflacjs/dist/min/
 RNNOISE_WASM_DIR = node_modules/rnnoise-wasm/dist/
-NODE_SASS = ./node_modules/.bin/node-sass
+SASS = ./node_modules/.bin/sass
 NPM = npm
 OUTPUT_DIR = .
 STYLES_BUNDLE = css/all.bundle.css
@@ -73,7 +73,7 @@ deploy-rnnoise-binary:
 		$(DEPLOY_DIR)
 
 deploy-css:
-	$(NODE_SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
+	$(SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
 	$(CLEANCSS) $(STYLES_BUNDLE) > $(STYLES_DESTINATION) ; \
 	rm $(STYLES_BUNDLE)
 
