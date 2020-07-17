@@ -12,6 +12,11 @@ import { isToolboxVisible } from '../../functions';
 import AudioMuteButton from '../AudioMuteButton';
 import HangupButton from '../HangupButton';
 import VideoMuteButton from '../VideoMuteButton';
+import CameraSwitchButton from '../CameraSwitchButton';
+import SwitchVoiceButton from '../SwitchVoiceButton';
+import AudioRouterButton from '../AudioRouterButton';
+
+import { getLocalVideoType, isLocalVideoTrackMuted } from '../../../base/tracks';
 
 import OverflowMenuButton from './OverflowMenuButton';
 import styles from './styles';
@@ -30,7 +35,11 @@ type Props = {
      * The indicator which determines whether the toolbox is visible.
      */
     _visible: boolean,
-
+        /**
+     * The indicator which determines whether the toolbox is visible.
+     */
+    _videoMuted: boolean,
+    
     /**
      * The redux {@code dispatch} function.
      */
@@ -48,13 +57,24 @@ class Toolbox extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
-        return (
-            <Container
-                style = { styles.toolbox }
-                visible = { this.props._visible }>
-                { this._renderToolbar() }
-            </Container>
-        );
+
+        if(this.isVideoMuted()){
+            return (
+                <Container
+                    style = { styles.toolbox }
+                    visible = { this.props._visible }>
+                    {this._renderAudioToolbar()}
+                </Container>
+            );
+        }else{
+            return (
+                <Container
+                    style = { styles.toolbox }
+                    visible = { this.props._visible }>
+                    { this._renderVideoToolbar() }
+                </Container>
+            );
+        }
     }
 
     /**
@@ -87,8 +107,7 @@ class Toolbox extends PureComponent<Props> {
             ]
         };
     }
-
-    /**
+   /**
      * Renders the toolbar. In order to avoid a weird visual effect in which the
      * toolbar is (visually) rendered and then visibly changes its size, it is
      * rendered only after we've figured out the width available to the toolbar.
@@ -108,11 +127,14 @@ class Toolbox extends PureComponent<Props> {
                     styles = { buttonStylesBorderless }
                     toggledStyles = { this._getChatButtonToggledStyle(toggledButtonStyles) } />
                 <AudioMuteButton
+                    showLabel = {true}
                     styles = { buttonStyles }
                     toggledStyles = { toggledButtonStyles } />
                 <HangupButton
+                    showLabel = {true}
                     styles = { hangupButtonStyles } />
                 <VideoMuteButton
+                    showLabel = {true}
                     styles = { buttonStyles }
                     toggledStyles = { toggledButtonStyles } />
                 <OverflowMenuButton
@@ -120,6 +142,80 @@ class Toolbox extends PureComponent<Props> {
                     toggledStyles = { toggledButtonStyles } />
             </View>
         );
+    }
+    /**
+     * Renders the toolbar. In order to avoid a weird visual effect in which the
+     * toolbar is (visually) rendered and then visibly changes its size, it is
+     * rendered only after we've figured out the width available to the toolbar.
+     *
+     * @returns {React$Node}
+     */
+    _renderAudioToolbar() {
+        const { _styles } = this.props;
+        const { buttonStyles, buttonStylesBorderless, hangupButtonStyles, toggledButtonStyles } = _styles;
+
+        return (
+            <View
+                accessibilityRole = 'toolbar'
+                pointerEvents = 'box-none'
+                style = { styles.toolbar }>
+                <AudioMuteButton
+                    showLabel = {true}
+                    styles = { buttonStyles }
+                    toggledStyles = { toggledButtonStyles } />
+                <HangupButton
+                    showLabel = {true}
+                    styles = { hangupButtonStyles } />
+                <AudioRouterButton
+                    showLabel = {true}
+                    styles = { buttonStyles }
+                    toggledStyles = { toggledButtonStyles } />
+            </View>
+        );
+    }
+
+
+    /**
+     * Renders the toolbar. In order to avoid a weird visual effect in which the
+     * toolbar is (visually) rendered and then visibly changes its size, it is
+     * rendered only after we've figured out the width available to the toolbar.
+     *
+     * @returns {React$Node}
+     */
+    _renderVideoToolbar() {
+        const { _styles } = this.props;
+        const { buttonStyles, buttonStylesBorderless, hangupButtonStyles, toggledButtonStyles } = _styles;
+
+        return (
+            <View
+                accessibilityRole = 'toolbar'
+                pointerEvents = 'box-none'
+                style = { styles.toolbar }>
+                <SwitchVoiceButton
+                    showLabel = {true}
+                    styles = { buttonStyles }
+                    toggledStyles = { toggledButtonStyles } />
+                <HangupButton
+                    showLabel = {true}
+                    styles = { hangupButtonStyles } />
+                <CameraSwitchButton
+                    showLabel = {true}
+                    styles = { buttonStyles }
+                    toggledStyles = { toggledButtonStyles } />
+            </View>
+        );
+    }
+
+    /**
+     *
+     * @inheritdoc
+     * @returns {void}
+     */
+    isVideoMuted() {
+        return this.props._videoMuted;
+        // const state = getState();
+        // const tracks = state['features/base/tracks'];
+        // return isLocalVideoTrackMuted(tracks);
     }
 }
 
@@ -133,9 +229,12 @@ class Toolbox extends PureComponent<Props> {
  * @returns {Props}
  */
 function _mapStateToProps(state: Object): Object {
+    const tracks = state['features/base/tracks'];
+
     return {
         _styles: ColorSchemeRegistry.get(state, 'Toolbox'),
-        _visible: isToolboxVisible(state)
+        _visible: isToolboxVisible(state),
+        _videoMuted: isLocalVideoTrackMuted(tracks)
     };
 }
 

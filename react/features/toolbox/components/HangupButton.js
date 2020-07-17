@@ -30,7 +30,7 @@ class HangupButton extends AbstractHangupButton<Props, *> {
     _hangup: Function;
 
     accessibilityLabel = 'toolbar.accessibilityLabel.hangup';
-    label = 'toolbar.hangup';
+    label = '挂断';
     tooltip = 'toolbar.hangup';
 
     /**

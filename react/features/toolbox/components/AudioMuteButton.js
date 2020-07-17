@@ -13,6 +13,7 @@ import { AbstractAudioMuteButton } from '../../base/toolbox';
 import type { AbstractButtonProps } from '../../base/toolbox';
 import { isLocalTrackMuted } from '../../base/tracks';
 import { muteLocal } from '../../remote-video-menu/actions';
+import { DeviceEventEmitter } from 'react-native'
 
 declare var APP: Object;
 
@@ -44,8 +45,8 @@ type Props = AbstractButtonProps & {
  */
 class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.mute';
-    label = 'toolbar.mute';
-    tooltip = 'toolbar.mute';
+    label = '静音';
+    tooltip = '静音';
 
     /**
      * Initializes a new {@code AudioMuteButton} instance.
@@ -67,6 +68,17 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {void}
      */
     componentDidMount() {
+        //监听事件名为EventName的事件
+        this.listenerAndroid = [];
+        this.listenerAndroid[this.listenerAndroid.length] = DeviceEventEmitter.addListener('SetAudioEnable',(value)=>{  
+            console.error("SetAudioEnable")
+            this._setAudioMuted(true);
+          }); 
+        this.listenerAndroid[this.listenerAndroid.length] = DeviceEventEmitter.addListener('SetAudioMuted',(value)=>{  
+            console.error("SetAudioMuted")
+            this._setAudioMuted(false);
+          }); 
+
         typeof APP === 'undefined'
             || APP.keyboardshortcut.registerShortcut(
                 'M',
@@ -82,6 +94,10 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
      * @returns {void}
      */
     componentWillUnmount() {
+        if(this.listenerAndroid){
+            this.listenerAndroid.map(listener=>{listener.remove()});
+        }
+
         typeof APP === 'undefined'
             || APP.keyboardshortcut.unregisterShortcut('M');
     }
@@ -135,6 +151,20 @@ class AudioMuteButton extends AbstractAudioMuteButton<Props, *> {
     _isDisabled() {
         return this.props._disabled;
     }
+    // render(){
+    //     super.render()
+
+    //     return (
+    //         <View style={{flex: 1, flexDirection: 'column'}}>
+    //             <View style={{width: 50, height: 50}}>
+    //                 <Text >
+    //                     { "静音"}
+    //                 </Text>
+    //             </View>
+    //         </View>
+    //     );
+
+    // }
 }
 
 /**

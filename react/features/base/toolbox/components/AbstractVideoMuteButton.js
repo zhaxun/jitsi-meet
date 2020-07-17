@@ -2,14 +2,14 @@
 
 import { IconCamera, IconCameraDisabled } from '../../icons';
 
-import AbstractButton from './AbstractButton';
-import type { Props } from './AbstractButton';
+import AbstractButtonLabel from './AbstractButtonLabel';
+import type { Props } from './AbstractButtonLabel';
 
 /**
  * An abstract implementation of a button for toggling video mute.
  */
 export default class AbstractVideoMuteButton<P : Props, S : *>
-    extends AbstractButton<P, S> {
+    extends AbstractButtonLabel<P, S> {
 
     icon = IconCamera;
     toggledIcon = IconCameraDisabled;

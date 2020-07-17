@@ -8,3 +8,7 @@ export { default as AbstractVideoMuteButton } from './AbstractVideoMuteButton';
 export { default as BetaTag } from './BetaTag';
 export { default as OverflowMenuItem } from './OverflowMenuItem';
 export { default as ToolboxButtonWithIcon } from './ToolboxButtonWithIcon';
+export { default as AbstractButtonLabel } from './AbstractButtonLabel';
+export { default as AbstractCameraSwitchButton } from './AbstractCameraSwitchButton';
+export { default as AbstractAudioRouterButton } from './AbstractAudioRouterButton';
+export { default as AbstractSwitchVoiceButton } from './AbstractSwitchVoiceButton';

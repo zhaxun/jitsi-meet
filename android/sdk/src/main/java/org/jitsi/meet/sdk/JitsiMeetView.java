@@ -207,4 +207,30 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
         dispose();
         super.onDetachedFromWindow();
     }
+
+
+    public void setVideoEnable() {
+        this.emitEvent("SetVideoEnable");
+    }
+
+    public void setVideoMuted() {
+        this.emitEvent("SetVideoMuted");
+    }
+
+    public void setAudioEnable() {
+        this.emitEvent("SetAudioEnable");
+    }
+
+    public void setAudioMuted() {
+        this.emitEvent("SetAudioMuted");
+    }
+
+    public void emitEvent(String eventName) {
+        this.emitEvent(eventName, (Object)null);
+    }
+
+    public void emitEvent(String eventName, @Nullable Object data) {
+        ReactInstanceManagerHolder.emitEvent(eventName, data);
+    }
+
 }

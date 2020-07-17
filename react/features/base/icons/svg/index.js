@@ -97,3 +97,10 @@ export { default as IconVolumeEmpty } from './volume-empty.svg';
 export { default as IconVolumeOff } from './volume-off.svg';
 export { default as IconWarning } from './warning.svg';
 export { default as IconYahoo } from './yahoo.svg';
+
+
+export { default as IconAudio } from './switch-voice.svg';//切换语音通话
+export { default as IconSwitchAudioSpeak } from './speak.svg';//免提
+export { default as IconSwitchAudioPhone } from './speak2.svg';//免提关闭
+export { default as IconSwitchCameraFront } from './camera-switch.svg';//前置摄像头
+export { default as IconSwitchCameraBack } from './camera-switch2.svg';//后置摄像头

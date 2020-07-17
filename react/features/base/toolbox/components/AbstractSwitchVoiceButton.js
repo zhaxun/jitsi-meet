@@ -1,6 +1,6 @@
 // @flow
 
-import { IconHangup } from '../../icons';
+import { IconAudio } from '../../icons';
 
 import AbstractButtonLabel from './AbstractButtonLabel';
 import type { Props } from './AbstractButtonLabel';
@@ -8,10 +8,10 @@ import type { Props } from './AbstractButtonLabel';
 /**
  * An abstract implementation of a button for disconnecting a conference.
  */
-export default class AbstractHangupButton<P : Props, S: *>
+export default class AbstractSwitchVoiceButton<P : Props, S: *>
     extends AbstractButtonLabel<P, S> {
 
-    icon = IconHangup;
+    icon = IconAudio;
 
     /**
      * Handles clicking / pressing the button, and disconnects the conference.
@@ -20,16 +20,17 @@ export default class AbstractHangupButton<P : Props, S: *>
      * @returns {void}
      */
     _handleClick() {
-        this._doHangup();
+        this._setVideoMuted(true);
     }
-
     /**
-     * Helper function to perform the actual hangup action.
+     * Helper function to perform the actual setting of the video mute / unmute
+     * action.
      *
+     * @param {boolean} videoMuted - Whether video should be muted or not.
      * @protected
      * @returns {void}
      */
-    _doHangup() {
+    _setVideoMuted(videoMuted: boolean) { // eslint-disable-line no-unused-vars
         // To be implemented by subclass.
     }
 }
